@@ -1,0 +1,54 @@
+-- Read the docs: https://www.lunarvim.org/docs/configuration
+-- Video Tutorials: https://www.youtube.com/watch?v=sFA9kX-Ud_c&list=PLhoH5vyxr6QqGu0i7tt_XoVK9v-KvZ3m6
+-- Forum: https://www.reddit.com/r/lunarvim/
+-- Discord: https://discord.com/invite/Xb9B4Ny
+
+-- plugins
+lvim.plugins = {
+  {
+    "phaazon/hop.nvim",
+    event = "BufRead",
+    config = function()
+      require("hop").setup()
+      vim.api.nvim_set_keymap("n", "s", ":HopChar2<cr>", { silent = true })
+      vim.api.nvim_set_keymap("n", "S", ":HopWord<cr>", { silent = true })
+    end,
+  },
+  {
+    "mrjones2014/nvim-ts-rainbow",
+  },
+  {
+    "ray-x/lsp_signature.nvim",
+    event = "BufRead",
+    config = function() require "lsp_signature".on_attach() end,
+  },
+  { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' },
+  {
+    'ray-x/go.nvim',
+    dependencies = {
+      'ray-x/guihua.lua'
+    },
+    config = function()
+      require("go").setup({
+        lsp_keymaps = true,
+        lsp_codelens = true,
+        dap_debug_keymap = false,
+      })
+    end,
+    event = { "CmdlineEnter" },
+    ft = { "go", "gomod" }
+  },
+}
+require('telescope').load_extension('fzf')
+-- options
+vim.opt.foldmethod = "expr"
+vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
+vim.opt.foldlevel = 99
+
+lvim.transparent_window = true
+-- builtin_options
+lvim.builtin.dap.active = true
+
+-- neovim mappings
+lvim.keys.insert_mode["jk"] = "<Esc>"
+lvim.keys.insert_mode["kj"] = "<Esc>"
